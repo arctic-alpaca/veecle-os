@@ -53,7 +53,7 @@ bitflags = { version = "2.9.4", default-features = false }
 camino = { version = "1.1.12", default-features = false }
 can-dbc = { version = "6.0.0", default-features = false }
 capicxx-someip-sys = { path = "capicxx-someip-sys", version = "0.1.0", default-features = false }
-cargo_metadata = { version = "0.22.0", default-features = false }
+cargo_metadata = "0.22.0"
 cc = { version = "1.2.36", default-features = false }
 clap = { version = "4.5.47", default-features = false }
 cmake = { version = "0.1.54", default-features = false }
