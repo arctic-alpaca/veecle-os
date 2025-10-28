@@ -128,7 +128,7 @@ jobs:
       alias-url: ${{ steps.wrangler.outputs.pages-deployment-alias-url }}
     steps:
       - uses: actions/checkout@v5
-      - uses: actions/download-artifact@v5
+      - uses: actions/download-artifact@v6
         with:
           name: docs-private
           path: target/doc
@@ -156,7 +156,7 @@ jobs:
       alias-url: ${{ steps.wrangler.outputs.pages-deployment-alias-url }}
     steps:
       - uses: actions/checkout@v5
-      - uses: actions/download-artifact@v5
+      - uses: actions/download-artifact@v6
         with:
           name: user-manual
           path: docs/user-manual/book
@@ -181,7 +181,7 @@ jobs:
       alias-url: ${{ steps.wrangler.outputs.pages-deployment-alias-url }}
     steps:
       - uses: actions/checkout@v5
-      - uses: actions/download-artifact@v5
+      - uses: actions/download-artifact@v6
         with:
           name: veecle-telemetry-ui-wasm
           path: veecle-telemetry-ui/dist
@@ -206,7 +206,7 @@ jobs:
       alias-url: ${{ steps.wrangler.outputs.pages-deployment-alias-url }}
     steps:
       - uses: actions/checkout@v5
-      - uses: actions/download-artifact@v5
+      - uses: actions/download-artifact@v6
         with:
           name: veecle-telemetry-vscode-extension.vsix
           path: veecle-telemetry-vscode-extension/veecle-telemetry-ui.vsix
