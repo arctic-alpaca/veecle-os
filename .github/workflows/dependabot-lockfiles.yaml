@@ -1,0 +1,52 @@
+# Automatically update lockfiles for dependabot PRs.
+name: dependabot-lockfiles.yaml
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+# Allow workflow to commit changes back to the PR.
+permissions:
+  contents: write
+
+jobs:
+  update-lockfiles:
+    runs-on: ubuntu-latest
+    # Only run on dependabot PRs.
+    if: >-
+      github.event.pull_request.user.login == 'dependabot[bot]'
+    steps:
+      - name: Generate token
+        id: generate-token
+        uses: actions/create-github-app-token@v1
+        with:
+          app-id: ${{ secrets.VEECLE_CI_ACCESS_APP_ID }}
+          private-key: ${{ secrets.VEECLE_CI_ACCESS_APP_PRIVATE_KEY }}
+
+      - uses: actions/checkout@v6
+        with:
+          # Required to push commits back to the PR branch.
+          ref: ${{ github.head_ref }}
+          token: ${{ steps.generate-token.outputs.token }}
+
+      - uses: ./.github/actions/setup-rustup
+      - uses: ./.github/actions/setup-tools
+        with:
+          just: true
+
+      - name: Update lockfiles
+        run: just update-lockfiles
+
+      - name: Commit and push lockfile changes
+        run: |
+          git config user.name "update-lockfiles[bot]"
+          git config user.email "devs@veecle.io"
+
+          # Check if there are changes to commit.
+          if ! git diff --quiet -- '**/Cargo.lock'; then
+            git add '**/Cargo.lock'
+            git commit -m "chore: update lockfiles [dependabot skip]"
+            git push
+          else
+            echo "No lockfile changes to commit"
+          fi
